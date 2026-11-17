@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar — Pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+<script src="../data.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">TOKEN LAUNCH RADAR</p>
+    <h1>Protocols that record no token, ranked by implied value</h1>
+    <p class="sub">A pre-token protocol is one whose DefiLlama record carries no token — no market cap, no CoinGecko id, no symbol. That is what the record says; it is not proof no token exists. Implied value is a model claim built only from this snapshot, not a prediction of when — or whether — a token launches.</p>
+    <div class="stats" id="stats" aria-label="Snapshot statistics"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="tabs" aria-label="Views">
+    <button type="button" class="tab active" data-tab="board" aria-pressed="true">Board</button>
+    <button type="button" class="tab" data-tab="live" aria-pressed="false">Live token</button>
+    <button type="button" class="tab" data-tab="method" aria-pressed="false">Methodology</button>
+  </nav>
+
+  <section id="tab-board" class="panel" aria-label="Ranked board">
+    <div class="controls">
+      <label class="ctl grow">Search
+        <input id="q" type="search" placeholder="Protocol name or slug…" autocomplete="off">
+      </label>
+      <label class="ctl">Category
+        <select id="cat"><option value="">All categories</option></select>
+      </label>
+      <label class="ctl check"><input id="wl" type="checkbox"> Watchlist only</label>
+      <button type="button" id="reset" class="btn">Reset</button>
+    </div>
+    <p class="count" id="count" role="status"></p>
+    <p class="nodata" id="nodata" hidden>No data loaded. This page reads <code>data.js</code> next to the dashboard folder; run the build first.</p>
+    <div class="tablewrap">
+      <table id="board">
+        <thead><tr>
+          <th data-sort="rank" scope="col">#</th>
+          <th data-sort="name" scope="col">Protocol</th>
+          <th data-sort="category" scope="col">Category</th>
+          <th data-sort="chains" scope="col">Chains</th>
+          <th data-sort="tvl" scope="col" class="num">TVL</th>
+          <th data-sort="chg" scope="col" class="num">7d</th>
+          <th data-sort="age" scope="col" class="num">Age</th>
+          <th data-sort="implied" scope="col" class="num">Implied value</th>
+        </tr></thead>
+        <tbody id="boardBody"></tbody>
+      </table>
+    </div>
+    <p class="hint">Click a row for the full breakdown and farm plan. Click a column header to sort; click again to reverse. Rank is by implied value, highest first.</p>
+  </section>
+
+  <section id="tab-live" class="panel" hidden aria-label="Live token protocols">
+    <h2>Live token — what the market already says</h2>
+    <p>These protocols already trade, so they are <strong>not</strong> on the board. Their value below is the market's own market cap, not a model estimate. They are shown because the board's pricing is calibrated from them: each category's multiple is the median FDV/TVL of the live-token protocols in that category, measured on this same snapshot.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th scope="col">#</th><th scope="col">Protocol</th><th scope="col">Category</th>
+          <th scope="col">Chains</th><th scope="col" class="num">TVL</th>
+          <th scope="col" class="num">Market cap</th><th scope="col" class="num">7d</th>
+          <th scope="col" class="num">FDV / TVL</th>
+        </tr></thead>
+        <tbody id="liveBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="tab-method" class="panel" hidden aria-label="Methodology">
+    <h2>Methodology — model radar-2</h2>
+    <h3>The formula</h3>
+    <p class="formula">implied = TVL × category&nbsp;multiple × growth&nbsp;multiplier × maturity&nbsp;multiplier × chains&nbsp;multiplier</p>
+    <ul class="steps">
+      <li><strong>Category multiple.</strong> Median FDV/TVL of the live-token protocols in the same category, measured on this snapshot. Needs at least 3 live protocols in the category; otherwise the global median is used. Clamped to 0.08 – 1.00.</li>
+      <li><strong>Growth multiplier.</strong> 1 + (clamped 7-day change ÷ 100) × 0.6. The 7-day change is clamped to −60% … +120% first, so one hot week cannot dominate the score.</li>
+      <li><strong>Maturity multiplier.</strong> 0.65 + min(age in days, 1095) ÷ 1095 × 0.35. Older protocols score higher, up to 1.00 at three years. Unknown age is treated as 365 days.</li>
+      <li><strong>Chains multiplier.</strong> 1 + 0.02 × min(number of chains, 5). At most +10%.</li>
+      <li><strong>Base.</strong> TVL × category multiple. The final value is rounded to whole dollars, minimum $1.</li>
+    </ul>
+    <h3>Calibration from this snapshot</h3>
+    <p>Multiples below come from the live-token protocols in the same snapshot — the market's own pricing, not a guess. Categories with fewer than 3 live protocols fall back to the global multiple.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th scope="col">Category</th><th scope="col" class="num">Live protocols (n)</th><th scope="col" class="num">Median FDV/TVL</th><th scope="col" class="num">Multiple used</th></tr></thead>
+        <tbody id="calibBody"></tbody>
+      </table>
+    </div>
+    <p id="globalCalib" class="note"></p>
+    <h3>Honest limits</h3>
+    <ul class="limits">
+      <li>One snapshot, dated <span id="asof"></span>. Prices, TVL and 7-day change move daily; this board is stale the moment the snapshot is taken.</li>
+      <li>Implied value is a model claim, not a price and not a prediction of when a token launches — or whether one ever does.</li>
+      <li>"Records no token" describes the DefiLlama record, not the protocol. A listed protocol may still hold a token its record does not carry.</li>
+      <li>The farm plan is a generic seven-step routine derived from category, chains, TVL and age. It is not advice, and farming costs gas and carries risk.</li>
+      <li>Only protocols the snapshot carries can be ranked. Anything missing from the snapshot is missing from the board.</li>
+    </ul>
+  </section>
+</main>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="dTitle">
+  <div class="backdrop" id="backdrop"></div>
+  <div class="sheet" role="document">
+    <button type="button" class="close" id="closeBtn" aria-label="Close detail">×</button>
+    <div id="detail"></div>
+  </div>
+</div>
+
+<footer class="wrap foot">
+  <p>Token Launch Radar · model <span id="footModel"></span> · snapshot <span id="footDate"></span> · source: <span id="footSource"></span>. Static page, no network requests, data from <code>data.js</code>.</p>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
