@@ -1,0 +1,93 @@
+:root{
+  --bg:#0b132b; --panel:#131e3a; --panel2:#1c2541; --line:#2a3a5f;
+  --ink:#eef1f8; --muted:#9aa7c2; --amber:#d97706; --cream:#f4d6b0;
+  --green:#4ade80; --red:#f87171; --radius:12px;
+}
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.top{background:linear-gradient(180deg,#101b38,#0b132b);border-bottom:1px solid var(--line);padding:34px 0 22px}
+.kicker{margin:0 0 6px;color:var(--amber);font-weight:700;letter-spacing:.18em;font-size:12px}
+h1{margin:0 0 10px;font-size:30px;line-height:1.2;letter-spacing:-.01em}
+.sub{margin:0 0 18px;max-width:78ch;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px}
+.stat b{display:block;font-size:20px;color:var(--cream);line-height:1.2}
+.stat span{font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:8px;margin:20px 0 0}
+.tab{background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:999px;
+  padding:8px 18px;font:inherit;font-weight:600;cursor:pointer}
+.tab.active,.tab:hover{background:var(--amber);border-color:var(--amber);color:#14100a}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px;margin:16px 0 28px}
+.panel h2{margin:0 0 8px;font-size:20px}
+.panel h3{margin:22px 0 6px;font-size:16px;color:var(--cream)}
+.panel p{margin:0 0 12px;color:var(--muted)}
+.panel p strong,.panel li strong{color:var(--ink)}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin-bottom:12px}
+.ctl{font-size:12px;color:var(--muted);font-weight:600}
+.ctl input[type=search],.ctl select{display:block;margin-top:4px;background:var(--bg);color:var(--ink);
+  border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;min-width:200px}
+.ctl input[type=search]{min-width:260px}
+.ctl.check{display:flex;align-items:center;gap:8px;padding-bottom:9px;color:var(--ink);font-size:14px}
+.ctl.check input{accent-color:var(--amber);width:16px;height:16px}
+.btn{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;
+  padding:8px 14px;font:inherit;cursor:pointer}
+.btn:hover{border-color:var(--amber);color:var(--cream)}
+.count{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.nodata{color:var(--cream);background:#3a2a10;border:1px solid var(--amber);border-radius:8px;padding:12px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px}
+th,td{padding:9px 8px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+thead th{position:sticky;top:0;background:var(--panel2);color:var(--cream);font-size:12px;
+  letter-spacing:.04em;text-transform:uppercase;cursor:pointer;user-select:none}
+thead th:hover{color:#fff}
+thead th.sorted{color:var(--amber)}
+tbody tr{cursor:pointer}
+tbody tr:nth-child(even){background:#101a33}
+tbody tr:hover{background:#1e2c52}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+td.num{font-variant-numeric:tabular-nums}
+.up{color:var(--green)} .down{color:var(--red)}
+.badge{display:inline-block;margin-left:8px;background:var(--amber);color:#14100a;border-radius:999px;
+  padding:1px 8px;font-size:11px;font-weight:700;letter-spacing:.05em;vertical-align:1px}
+.chains{color:var(--muted);max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.name{font-weight:600;color:var(--ink)}
+.slug{color:var(--muted);font-size:12px}
+.hint{margin:12px 0 0;font-size:13px;color:var(--muted)}
+.formula{background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--amber);
+  border-radius:8px;padding:12px 14px;font-size:16px;color:var(--cream)}
+.steps li,.limits li{margin-bottom:8px;color:var(--muted)}
+.note{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;color:var(--muted)}
+.foot{padding:0 20px 30px;color:var(--muted);font-size:13px}
+.modal{position:fixed;inset:0;z-index:50}
+.backdrop{position:absolute;inset:0;background:rgba(4,8,20,.72)}
+.sheet{position:absolute;inset:24px 16px;max-width:760px;margin:auto;background:var(--panel);
+  border:1px solid var(--line);border-radius:14px;padding:24px;overflow-y:auto}
+.close{position:sticky;top:0;float:right;background:var(--panel2);color:var(--ink);
+  border:1px solid var(--line);border-radius:50%;width:34px;height:34px;font-size:20px;cursor:pointer}
+.sheet h2{margin:0 0 4px;font-size:24px;padding-right:40px}
+.sheet .meta{color:var(--muted);margin:0 0 16px}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}
+.kv div{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.kv b{display:block;font-size:17px;color:var(--cream)}
+.kv span{font-size:12px;color:var(--muted)}
+.breakdown{width:100%;border-collapse:collapse;margin:0 0 6px;font-size:14px;min-width:0}
+.breakdown td{padding:7px 4px;border-bottom:1px solid var(--line);white-space:normal}
+.breakdown td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.breakdown tr.total td{font-weight:700;color:var(--cream);border-bottom:0}
+.farm{list-style:none;margin:0;padding:0;counter-reset:f}
+.farm li{counter-increment:f;display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.farm li:last-child{border-bottom:0}
+.farm li::before{content:counter(f);width:26px;height:26px;border-radius:50%;background:var(--amber);
+  color:#14100a;font-weight:700;font-size:13px;display:grid;place-items:center}
+.farm .cost,.farm .time{font-size:13px;color:var(--muted)}
+.farm .cost b,.farm .time b{color:var(--cream)}
+@media (max-width:760px){
+  h1{font-size:24px}.stats{grid-template-columns:repeat(2,1fr)}
+  .kv{grid-template-columns:repeat(2,1fr)}.sheet{inset:12px 8px;padding:18px}
+  .ctl input[type=search]{min-width:0;width:100%}.ctl.grow{flex:1 1 100%}
+}
